@@ -1,14 +1,18 @@
-"use client"
 
 import {Link} from "@tanstack/react-router"
 import { ArrowLeft, Github, Mail } from "lucide-react"
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import {getSocialLoginUrl} from  "../api/helper";
 
 
 export default function Login() {
-  
 
+  function redirect(authProvider) {
+    window.location.href = getSocialLoginUrl(authProvider);
+  }
+  
+  
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
@@ -31,6 +35,8 @@ export default function Login() {
             <div className="space-y-4">
               {/* Google OAuth Button */}
               <button
+
+               onClick={() => redirect("google")}
                
                 className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 border border-gray-300 rounded-md shadow-sm transition duration-300"
               >
