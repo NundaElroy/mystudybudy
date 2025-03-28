@@ -21,6 +21,8 @@ export default [
       'react-refresh': reactRefresh,
     },
     rules: {
+      "react/no-unescaped-entities": "off",
+      "react/prop-types": "off",
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
@@ -31,3 +33,6 @@ export default [
     },
   },
 ]
+
+
+
