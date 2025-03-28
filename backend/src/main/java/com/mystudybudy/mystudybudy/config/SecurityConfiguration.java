@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -21,18 +23,27 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration{
     private final JWTTokenValidator jwtTokenValidator;
     private final CustomOAuth2SuccessHandler successHandler;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
 
-    public SecurityConfiguration(JWTTokenValidator jwtTokenValidator, CustomOAuth2SuccessHandler successHandler) {
+    public SecurityConfiguration(JWTTokenValidator jwtTokenValidator, CustomOAuth2SuccessHandler successHandler, AuthenticationEntryPoint authenticationEntryPoint) {
         this.jwtTokenValidator = jwtTokenValidator;
         this.successHandler = successHandler;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         http
-                .sessionManagement((management)-> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Completely disable session management
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .anonymous(anonymous -> anonymous.disable())
+                // Disable form login and default security mechanisms
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/**").authenticated()
@@ -46,7 +57,8 @@ public class SecurityConfiguration{
                 .addFilterBefore(jwtTokenValidator, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> {
                     cors.configurationSource(corsConfigurationSource());
-                });
+                })
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint));
 
 
         return http.build();

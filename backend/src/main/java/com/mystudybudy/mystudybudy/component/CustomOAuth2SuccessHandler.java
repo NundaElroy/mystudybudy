@@ -5,10 +5,12 @@ import com.mystudybudy.mystudybudy.repo.UserRepository;
 import com.mystudybudy.mystudybudy.servicesimp.JwtTokenProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
@@ -17,8 +19,10 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtService;
+    @Value("${oauth.redirect.uri}")
+    private  String redirectUri;
 
-    public CustomOAuth2SuccessHandler(UserRepository userRepository, JwtTokenProvider jwtService) {
+    public CustomOAuth2SuccessHandler(UserRepository userRepository, JwtTokenProvider jwtService ) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
     }
@@ -41,10 +45,13 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
         // Generate JWT
         String jwt = jwtService.generateToken(email);
 
-        // Send JWT as response
-        response.setContentType("application/json");
-        response.getWriter().write("{\"token\": \"" + jwt + "\"}");
-        response.getWriter().flush();
+        String targetUrl = UriComponentsBuilder.fromUriString(redirectUri)
+                .queryParam("token", jwt)
+                .build().toUriString();
+
+        // Send JWT in redirectURL
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+
     }
 }
 
