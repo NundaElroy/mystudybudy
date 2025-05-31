@@ -20,11 +20,3 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 
 
-// export const Route = createRootRoute({
-//   component: () => (
-//     <>
-//       <Outlet />{/*this where the children are inserted  */}
-//       <TanStackRouterDevtools />
-//     </>
-//   ),
-// });

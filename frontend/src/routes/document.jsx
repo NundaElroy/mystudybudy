@@ -1,12 +1,12 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import {useAuth}  from "../context/context";
-import Dashboard from "../components/Dashboard"
+import Document from "../components/Document"
 
 
-export const Route = createFileRoute('/dashboard')({
+export const Route = createFileRoute('/document')({
   beforeLoad: async ({context}) => {
     // Use console.log with a unique, identifiable message
-    console.log('ROUTE_DEBUG: Dashboard beforeLoad is DEFINITELY being called');
+    console.log('ROUTE_DEBUG: Document beforeLoad is DEFINITELY being called');
     
     // Simplified redirect logic just to test
     if (!context.auth.isAuthenticated ) {
@@ -17,18 +17,18 @@ export const Route = createFileRoute('/dashboard')({
   }
   },
   
-  component: DashboardPage,
+  component: DocumentPage,
     
   
 })
 
-const DashboardPage = () => {
+const DocumentPage = () => {
   const { user } = useAuth();
   
   if (!user) return <div>Loading...</div>;
   
   return (
-    <Dashboard 
+    <Document 
       profilePictureUrl={user.picture}
       userName={user.name}
     />

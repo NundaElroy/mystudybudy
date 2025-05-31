@@ -91,7 +91,7 @@ this is the context token passed
           setIsLoading(false);
         
       }
-     debugger
+     
       // Call the fetch data function
       fetchData();
     }, []); // Empty dependency array

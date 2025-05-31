@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
+import { Route as DocumentImport } from './routes/document'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as AuthenticatedImport } from './routes/authenticated'
 
@@ -33,6 +34,12 @@ const AboutLazyRoute = AboutLazyImport.update({
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DocumentRoute = DocumentImport.update({
+  id: '/document',
+  path: '/document',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -79,6 +86,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
     }
+    '/document': {
+      id: '/document'
+      path: '/document'
+      fullPath: '/document'
+      preLoaderRoute: typeof DocumentImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -102,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/authenticated': typeof AuthenticatedRoute
   '/dashboard': typeof DashboardRoute
+  '/document': typeof DocumentRoute
   '/login': typeof LoginRoute
   '/about': typeof AboutLazyRoute
 }
@@ -110,6 +125,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/authenticated': typeof AuthenticatedRoute
   '/dashboard': typeof DashboardRoute
+  '/document': typeof DocumentRoute
   '/login': typeof LoginRoute
   '/about': typeof AboutLazyRoute
 }
@@ -119,16 +135,30 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/authenticated': typeof AuthenticatedRoute
   '/dashboard': typeof DashboardRoute
+  '/document': typeof DocumentRoute
   '/login': typeof LoginRoute
   '/about': typeof AboutLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/authenticated' | '/dashboard' | '/login' | '/about'
+  fullPaths:
+    | '/'
+    | '/authenticated'
+    | '/dashboard'
+    | '/document'
+    | '/login'
+    | '/about'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/authenticated' | '/dashboard' | '/login' | '/about'
-  id: '__root__' | '/' | '/authenticated' | '/dashboard' | '/login' | '/about'
+  to: '/' | '/authenticated' | '/dashboard' | '/document' | '/login' | '/about'
+  id:
+    | '__root__'
+    | '/'
+    | '/authenticated'
+    | '/dashboard'
+    | '/document'
+    | '/login'
+    | '/about'
   fileRoutesById: FileRoutesById
 }
 
@@ -136,6 +166,7 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AuthenticatedRoute: typeof AuthenticatedRoute
   DashboardRoute: typeof DashboardRoute
+  DocumentRoute: typeof DocumentRoute
   LoginRoute: typeof LoginRoute
   AboutLazyRoute: typeof AboutLazyRoute
 }
@@ -144,6 +175,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AuthenticatedRoute: AuthenticatedRoute,
   DashboardRoute: DashboardRoute,
+  DocumentRoute: DocumentRoute,
   LoginRoute: LoginRoute,
   AboutLazyRoute: AboutLazyRoute,
 }
@@ -161,6 +193,7 @@ export const routeTree = rootRoute
         "/",
         "/authenticated",
         "/dashboard",
+        "/document",
         "/login",
         "/about"
       ]
@@ -173,6 +206,9 @@ export const routeTree = rootRoute
     },
     "/dashboard": {
       "filePath": "dashboard.jsx"
+    },
+    "/document": {
+      "filePath": "document.jsx"
     },
     "/login": {
       "filePath": "login.jsx"
