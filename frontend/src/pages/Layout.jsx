@@ -68,6 +68,10 @@ const Layout = ({ children, profilePictureUrl, userName, isLoading = false, curr
         </nav>
 
         <div className="p-4 border-t border-gray-200">
+          <button className="flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mb-4">
+            <Plus className="w-4 h-4 mr-2" />
+            New Folder
+          </button>
           <button className="flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
             <Plus className="w-4 h-4 mr-2" />
             New Document

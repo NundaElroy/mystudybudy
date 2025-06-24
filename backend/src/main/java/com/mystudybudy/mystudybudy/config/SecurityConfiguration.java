@@ -47,7 +47,7 @@ public class SecurityConfiguration{
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/api/**").authenticated()
-                                .requestMatchers("/auth/**", "/login/oauth2/code/**", "/oauth2/authorization/**","/login").permitAll() // ✅ Allow OAuth2 login paths without JWT
+                                .requestMatchers("/auth/**", "/login/oauth2/code/**", "/oauth2/authorization/**","/login").permitAll() //  Allow OAuth2 login paths without JWT
 
                 )
                 .oauth2Login(oauth2 -> oauth2
